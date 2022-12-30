@@ -1,0 +1,31 @@
+﻿@page "/ProductList"
+
+@inject HttpClient api
+
+<h4>Product List</h4>
+
+<QuickGrid Items="@products">
+    <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Description)" Sortable="true" />
+</QuickGrid>
+
+@code 
+{
+    IQueryable<Product>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        List<Product>? listProducts = await api.GetFromJsonAsync<List<Product>>($"api/product/getlist");
+
+        if (listProducts is not null)
+        {
+            products = listProducts.AsQueryable();
+        }
+
+    }
+}
+
+

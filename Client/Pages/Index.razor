@@ -1,9 +1,31 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+@inject HttpClient api
 
-<h1>Hello, world!</h1>
+
+<PageTitle>Index</PageTitle>
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+Category Name: @catName
+
+Category Description: @catDesc
+
+
+@code
+{
+    string? catName, catDesc;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        Category? cat = await api.GetFromJsonAsync<Category>($"api/category/1");
+
+        if (cat is not null)
+        {
+            catName = cat.Name;
+            catDesc = cat.Description;
+        }
+    }
+}

@@ -5,8 +5,4 @@
     <RootNamespace>SimpleBlazorDemo.Shared</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

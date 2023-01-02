@@ -2,32 +2,30 @@
 
 @inject HttpClient api
 
-
-<PageTitle>Index</PageTitle>
-
 Welcome to your new app.
 
-Category Name: @catName
+<br/>
 
-Category Description: @catDesc
+Product count: @productCount
 
-<a href="/ProductList">Product List</a>
+<a href="/ProductList">Product List</a>;
 
 
 @code
 {
-    string? catName, catDesc;
+    int? productCount;
+
+    List<Product>? productsList;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        Category? cat = await api.GetFromJsonAsync<Category>($"api/category/1");
+        productsList = await api.GetFromJsonAsync<List<Product>>($"api/product/getlist");
 
-        if (cat is not null)
+        if (productsList != null)
         {
-            catName = cat.Name;
-            catDesc = cat.Description;
+            productCount = productsList.Count;
         }
     }
 }

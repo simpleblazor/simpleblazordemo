@@ -1,0 +1,58 @@
+﻿@page "/ProductEdit/{Id:int}"
+
+@inject HttpClient api
+
+<EditForm Model="@editContext" OnValidSubmit="@HandleValidSubmit">
+
+    <label>Id: @productModel.Id</label>
+
+    <InputText id="name" @bind-Value="productModel.Name" />
+
+    <InputText id="description" @bind-Value="productModel.Description" />
+
+    <InputSelect id="category" @bind-Value="productModel.Category">
+        <option value="">Select category ...</option>
+        <option value="Home">Home</option>
+        <option value="Business">Business</option>
+        <option value="Both">Both</option>
+    </InputSelect>
+
+    <img src="@productModel.ImageUrl" height="300" width="300"/>
+
+    <InputNumber id="rating" @bind-Value="productModel.Rating"/>
+
+    <InputCheckbox id="active" @bind-Value="productModel.IsActive"/>
+
+
+    <button class="btn btn-primary" type="submit">Save</button>
+
+</EditForm>
+
+@code 
+{
+    [Parameter] public int Id { get; set;}
+
+    EditContext? editContext;
+    Product productModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var tmpModel = await api.GetFromJsonAsync<Product?>($"api/product/get/{Id}");
+
+        if (tmpModel != null)
+        {
+            productModel = tmpModel;
+            editContext = new(productModel);
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+       
+
+      
+    }
+
+}
